@@ -1,2 +1,0 @@
-# Cart-Vue
-chart-vue
