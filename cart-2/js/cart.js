@@ -4,7 +4,9 @@ const vm = new Vue({
     data: {
         totalMoney: 0,
         productList: [],
-        checkAllFlag: false
+        checkAllFlag: false,
+        delFlag: false,
+        curProduct: ''
     },
     // 局部过滤器，只能在当前实例中调用
     filters: {
@@ -21,7 +23,7 @@ const vm = new Vue({
             this.$http.get('data/cartData.json', { 'id': 123 })
                 .then(res => {
                     this.productList = res.data.result.list;
-                    this.totalMoney = res.data.result.totalMoney;
+                    // this.totalMoney = res.data.result.totalMoney;
                 });
         },
         changeMoney: function (product, way) {
@@ -44,13 +46,14 @@ const vm = new Vue({
             } else {
                 item.checked = !item.checked;
             }
-            this.productList.forEach(function(item, index){
-                if(item.checked){
+            this.productList.forEach(function (item, index) {
+                if (item.checked) {
                     _this.checkAllFlag = true;
-                }else{
+                } else {
                     _this.checkAllFlag = false;
                 }
             })
+            this.calcTotaPrice();
         },
         checkAll: function (flag) {
             let _this = this;
@@ -62,6 +65,25 @@ const vm = new Vue({
                     item.checked = _this.checkAllFlag;
                 }
             })
+            this.calcTotaPrice();
+        },
+        calcTotaPrice: function () {
+            let _this = this;
+            this.totalMoney = 0;
+            this.productList.forEach(function (item, index) {
+                if (item.checked) {
+                    _this.totalMoney += item.productPrice * item.productQuantity;
+                }
+            })
+        },
+        delConfirm: function (item) {
+            this.delFlag = true;
+            this.curProduct = item;
+        },
+        delProduct: function () {
+            let index = this.productList.indexOf(this.curProduct);
+            this.productList.splice(index, 1);
+            this.delFlag = false;
         }
     }
 });

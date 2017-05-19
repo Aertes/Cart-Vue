@@ -63,11 +63,11 @@
         <div class="addr-list-wrap">
           <div class="addr-list">
             <ul>
-              <li>
+              <li v-for="(item, index) in addressList">
                 <dl>
-                  <dt>JackBean</dt>
-                  <dd class="address">北京朝阳区朝阳公园</dd>
-                  <dd class="tel">13356576785</dd>
+                  <dt>{{ item.userName }}</dt>
+                  <dd class="address">{{item.streetName}}</dd>
+                  <dd class="tel">{{item.tel}}</dd>
                 </dl>
                 <div class="addr-opration addr-edit">
                   <a href="javascript:;" class="addr-edit-btn">
